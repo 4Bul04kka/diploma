@@ -1,62 +1,76 @@
 .header {
-  background-color: #19233c;
-  color: #fff;
+  background-color: #1f2a44;
+  color: #ffffff;
   width: 100%;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 0 2rem; /* Adds padding to the sides */
-  flex-wrap: wrap; /* Allows the header items to wrap to the next line */
+  padding: 1.2rem 2rem;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+  flex-wrap: wrap;
 }
 
 .header-logo img {
-  height: 50px; /* Make the logo smaller */
-  margin: 10px 2rem; /* Adds space above and below the logo */
+  height: 42px;
+  margin: 0.5rem 1.5rem 0.5rem 0;
   flex-shrink: 0;
-  margin-right: 60px; /* Prevents the logo from shrinking */
 }
 
 .header-nav-list {
-  list-style: none;
   display: flex;
   align-items: center;
+  gap: 2.5rem;
+  list-style: none;
   margin: 0;
-  padding: 10px;
-  gap: 3rem; /* Adjust spacing between nav items */
-  flex-wrap: wrap; /* Allows the nav items to wrap when screen size is reduced */
+  padding: 0;
+  flex-wrap: wrap;
 }
 
 .header-nav-link {
   color: #ffffff;
   text-decoration: none;
-  font-size: 1.8rem; /* Increased font size for nav links */
+  font-size: 1rem;
   font-weight: 500;
+  position: relative;
+  padding-bottom: 0.25rem;
   transition: color 0.3s ease;
 }
 
-.header-nav-link:hover,
-.header-nav li.active .header-nav-link {
-  color: #ffffff;
-  border-bottom: 2px solid #fff299; /* Underline on hover and active state */
+.header-nav-link::after {
+  content: "";
+  position: absolute;
+  width: 0%;
+  height: 2px;
+  left: 0;
+  bottom: 0;
+  background-color: #ffe066;
+  transition: width 0.3s ease;
+}
+
+.header-nav-link:hover::after,
+.header-nav li.active .header-nav-link::after {
+  width: 100%;
 }
 
 .header-buttons-container {
-  display: none; /* Buttons are no longer needed */
+  display: none; /* Прячем, если не используем */
 }
 
-/* Media query to handle smaller screens */
+/* Адаптивность */
 @media (max-width: 768px) {
   .header {
-    flex-direction: column; /* Stack the header content vertically */
-    height: auto; /* Adjust height for wrapping content */
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
   }
 
   .header-nav-list {
-    justify-content: center; /* Center the nav items when they wrap */
-    gap: 1rem; /* Reduce the spacing between nav items on small screens */
+    justify-content: center;
+    gap: 1.2rem;
+    padding-top: 0.5rem;
   }
 
   .header-logo img {
-    margin: 10px 0; /* Adjust margin for logo on smaller screens */
+    margin: 0.5rem auto;
   }
 }

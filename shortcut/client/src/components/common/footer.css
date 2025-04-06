@@ -1,21 +1,72 @@
 .footer {
   background-color: #19233c;
-  color: #fff;
+  color: #ffffff;
+  padding: 40px 20px;
+  font-size: 1rem;
 }
 
-.container {
-  max-width: 1575px;
+.footer-container {
+  max-width: 1200px;
   margin: 0 auto;
   display: flex;
+  flex-wrap: wrap;
   justify-content: space-between;
-  align-items: center;
+  gap: 2rem;
 }
 
-.footer_text {
-  font-size: 20px;
+.footer-logo-section {
+  flex: 1 1 250px;
 }
 
 .footer-logo {
-  height: 140px;
-  cursor: pointer;
+  height: 50px;
+  margin-bottom: 10px;
+}
+
+.footer-copy {
+  font-size: 0.9rem;
+  color: #cccccc;
+}
+
+.footer-links-section,
+.footer-contact-section {
+  flex: 1 1 200px;
+}
+
+.footer-title {
+  font-size: 1.2rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
+}
+
+.footer-links {
+  list-style: none;
+  padding: 0;
+}
+
+.footer-links li {
+  margin-bottom: 0.5rem;
+}
+
+.footer-links a {
+  color: #ffffff;
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+.footer-links a:hover {
+  color: #fff299;
+}
+
+.footer-contact-section p {
+  margin-bottom: 0.5rem;
+  color: #cccccc;
+}
+
+/* Адаптивность */
+@media (max-width: 768px) {
+  .footer-container {
+    flex-direction: column;
+    align-items: flex-start;
+  }
 }
