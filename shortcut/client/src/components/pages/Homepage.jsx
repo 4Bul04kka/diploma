@@ -66,7 +66,7 @@ const Benefits = () => (
 // Главная страница
 const Homepage = () => {
   return (
-    <div>
+    <div className='homepage'>
       <Hero />
       <HowItWorks />
       <Benefits />

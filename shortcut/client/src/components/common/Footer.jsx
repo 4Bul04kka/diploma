@@ -1,6 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import "./footer.css";
+import { footer_logo } from "../../img/Img_exports"; // Импортируем логотип
 
 function Footer() {
   return (
@@ -8,7 +9,7 @@ function Footer() {
       <div className='footer-container'>
         {/* Левая колонка — логотип и копирайт */}
         <div className='footer-logo-section'>
-          <img src='/logo.png' alt='Логотип' className='footer-logo' />
+          <img src={footer_logo} alt='Логотип' className='footer-logo' />
           <p className='footer-copy'>
             &copy; {new Date().getFullYear()} Shortcut. Все права защищены.
           </p>
@@ -22,17 +23,17 @@ function Footer() {
               <Link to='/services'>Услуги</Link>
             </li>
             <li>
-              <Link to='/portfolio'>Портфолио</Link>
+              <Link to='/partners'>Наши партнёры</Link>
             </li>
             <li>
-              <Link to='/about'>О компании</Link>
+              <Link to='/about'>О платформе</Link>
             </li>
-            <li>
+            {/* <li>
               <Link to='/communication'>Контакты</Link>
             </li>
             <li>
               <Link to='/events'>Новости</Link>
-            </li>
+            </li> */}
           </ul>
         </div>
 

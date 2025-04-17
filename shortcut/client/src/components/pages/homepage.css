@@ -1,11 +1,14 @@
 /* homepage.css */
-
+.homepage {
+  min-height: calc(100vh - 290px);
+}
 body {
   font-family: "Inter", sans-serif;
   background-color: #f9fafb;
   color: #1f2937;
   margin: 0;
   padding: 0;
+  /* min-height: calc(100vh - 210px); */
 }
 
 .hero {

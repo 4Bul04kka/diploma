@@ -1,5 +1,5 @@
 .header {
-  background-color: #1f2a44;
+  background-color: #1f2f57;
   color: #ffffff;
   width: 100%;
   display: flex;
@@ -11,9 +11,10 @@
 }
 
 .header-logo img {
-  height: 42px;
-  margin: 0.5rem 1.5rem 0.5rem 0;
+  height: 60px; /* Increase the height of the logo */
+  margin: 0.2rem 1rem 0.2rem 0; /* Reduce the margin to save space */
   flex-shrink: 0;
+  object-fit: contain; /* Ensure the logo scales properly */
 }
 
 .header-nav-list {

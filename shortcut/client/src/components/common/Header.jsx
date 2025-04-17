@@ -1,6 +1,7 @@
 import React from "react";
 import "./header.css";
 import { Link, useMatch, useResolvedPath } from "react-router-dom";
+import { header_logo } from "../../img/Img_exports"; // Импортируем логотип
 
 function Header() {
   return (
@@ -8,7 +9,7 @@ function Header() {
       {/* Логотип */}
       <div className='header-logo'>
         <Link to='/' className='logo-link'>
-          <img src='/logo.png' alt='Логотип' />
+          <img src={header_logo} alt='Логотип' />
         </Link>
       </div>
 
@@ -16,17 +17,17 @@ function Header() {
       <nav className='header-nav'>
         <ul className='header-nav-list'>
           <CustomLink to='/services'>Услуги</CustomLink>
-          <CustomLink to='/portfolio'>Портфолио</CustomLink>
-          <CustomLink to='/about'>О компании</CustomLink>
-          <CustomLink to='/communication'>Контакты</CustomLink>
-          <CustomLink to='/events'>Новости</CustomLink>
+          <CustomLink to='/partners'>Наши партнёры</CustomLink>
+          <CustomLink to='/about'>О платформе</CustomLink>
+          {/* <CustomLink to='/communication'>Контакты</CustomLink> */}
+          {/* <CustomLink to='/events'>Новости</CustomLink> */}
         </ul>
       </nav>
 
       {/* Кнопки (можно показать при необходимости) */}
-      {/* <div className="header-buttons-container">
-        <button className="header-button">Вход</button>
-        <button className="header-button">Регистрация</button>
+      {/* <div className='header-buttons-container'>
+        <button className='header-button'>Вход</button>
+        <button className='header-button'>Регистрация</button>
       </div> */}
     </header>
   );
