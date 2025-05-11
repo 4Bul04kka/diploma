@@ -1,0 +1,275 @@
+openapi: 3.0.0
+info:
+  title: Кредитный сервис
+  version: 1.0.0
+  description: API для подачи заявок на кредит с интеграцией с 1С
+
+servers:
+  - url: http://localhost:3001
+    description: Локальный сервер разработки
+
+paths:
+  /api/fill-data:
+    get:
+      summary: Получение данных из 1С клиента
+      responses:
+        "200":
+          description: Финансовые данные успешно получены
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  company_name:
+                    type: string
+                  financial_info:
+                    type: string
+
+  /api/listings:
+    post:
+      summary: Создание заявки на кредит
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ListingInput"
+      responses:
+        "201":
+          description: Заявка успешно создана
+
+  /api/import/application:
+    post:
+      summary: Отправка заявки в систему банка
+      responses:
+        "200":
+          description: Успешная регистрация заявки в системе банка
+
+  /api/profiles/client:
+    post:
+      summary: Создание профиля клиента
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ClientProfileInput"
+      responses:
+        "201":
+          description: Профиль клиента создан
+
+  /api/profiles/bank:
+    post:
+      summary: Создание профиля банка
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/BankProfileInput"
+      responses:
+        "201":
+          description: Профиль банка создан
+
+  /api/login:
+    post:
+      summary: Авторизация пользователя
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/LoginInput"
+      responses:
+        "200":
+          description: Успешная авторизация
+        "401":
+          description: Неверные данные
+
+  /api/profiles/client/{id}:
+    get:
+      summary: Получить личный кабинет клиента
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+          description: ID клиента
+      responses:
+        "200":
+          description: Данные личного кабинета клиента
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ClientProfileOutput"
+        "404":
+          description: Профиль не найден
+    delete:
+      summary: Удаление профиля клиента
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: integer
+          required: true
+          description: ID профиля клиента
+      responses:
+        "200":
+          description: Профиль клиента удалён
+
+  /api/profiles/bank/{id}:
+    get:
+      summary: Получить личный кабинет банка
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+          description: ID представителя банка
+      responses:
+        "200":
+          description: Данные личного кабинета представителя банка
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BankProfileOutput"
+        "404":
+          description: Профиль не найден
+    delete:
+      summary: Удаление профиля банка
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: integer
+          required: true
+          description: ID профиля банка
+      responses:
+        "200":
+          description: Профиль банка удалён
+
+components:
+  schemas:
+    ListingInput:
+      type: object
+      properties:
+        title:
+          type: string
+        description:
+          type: string
+        financial_info:
+          type: string
+        documents:
+          type: array
+          items:
+            type: string
+            format: binary
+      required:
+        - title
+        - description
+        - financial_info
+
+    ClientProfileInput:
+      type: object
+      properties:
+        email:
+          type: string
+          format: email
+        password:
+          type: string
+        full_name:
+          type: string
+        company_name:
+          type: string
+        inn:
+          type: string
+        kpp:
+          type: string
+        address:
+          type: string
+        financial_info:
+          type: string
+      required: [email, password, full_name, company_name, inn]
+
+    BankProfileInput:
+      type: object
+      properties:
+        email:
+          type: string
+          format: email
+        password:
+          type: string
+        full_name:
+          type: string
+        bank_branch:
+          type: string
+      required: [email, password, full_name, bank_branch]
+
+    LoginInput:
+      type: object
+      properties:
+        email:
+          type: string
+        password:
+          type: string
+        role:
+          type: string
+          enum: [client, bank]
+      required: [email, password, role]
+
+    ClientProfileOutput:
+      type: object
+      properties:
+        id:
+          type: integer
+        full_name:
+          type: string
+        email:
+          type: string
+        company_name:
+          type: string
+        inn:
+          type: string
+        kpp:
+          type: string
+        address:
+          type: string
+        financial_info:
+          type: string
+        listings:
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: integer
+              title:
+                type: string
+              status:
+                type: string
+
+    BankProfileOutput:
+      type: object
+      properties:
+        id:
+          type: integer
+        full_name:
+          type: string
+        email:
+          type: string
+        bank_branch:
+          type: string
+        applications:
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: integer
+              status:
+                type: string
+              sent_at:
+                type: string
+                format: date-time
