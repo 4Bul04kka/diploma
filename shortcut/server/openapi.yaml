@@ -1,7 +1,7 @@
 openapi: 3.0.0
 info:
   title: Кредитный сервис
-  version: 1.0.0
+  version: 1.1.0 # Updated version
   description: API для подачи заявок на кредит с интеграцией с 1С
 
 servers:
@@ -9,9 +9,11 @@ servers:
     description: Локальный сервер разработки
 
 paths:
-  /api/fill-data:
+  /api/financial-data: # Renamed endpoint
     get:
-      summary: Получение данных из 1С клиента
+      summary: Получение финансовых данных из 1С клиента # Updated summary
+      security:
+        - bearerAuth: [] # Added security
       responses:
         "200":
           description: Финансовые данные успешно получены
@@ -23,27 +25,118 @@ paths:
                   company_name:
                     type: string
                   financial_info:
-                    type: string
+                    type: string # Assuming financial_info is still a string based on current spec
+        "401":
+          $ref: "#/components/responses/UnauthorizedError" # Added common error
+        "500":
+          $ref: "#/components/responses/InternalServerError" # Added common error
 
   /api/listings:
     post:
       summary: Создание заявки на кредит
+      security:
+        - bearerAuth: [] # Added security
       requestBody:
         required: true
         content:
-          application/json:
+          multipart/form-data: # Changed to multipart/form-data for file uploads
             schema:
-              $ref: "#/components/schemas/ListingInput"
+              type: object
+              properties:
+                title:
+                  type: string
+                description:
+                  type: string
+                financial_info:
+                  type: string # Assuming financial_info is still a string
+                documents:
+                  type: array
+                  items:
+                    type: string
+                    format: binary # Use binary format for file content
+              required:
+                - title
+                - description
+                - financial_info
+            encoding:
+              documents:
+                contentType: application/octet-stream # Specify content type for files
       responses:
         "201":
           description: Заявка успешно создана
+        "400":
+          $ref: "#/components/responses/BadRequestError" # Added common error
+        "401":
+          $ref: "#/components/responses/UnauthorizedError" # Added common error
+        "500":
+          $ref: "#/components/responses/InternalServerError" # Added common error
+
+  /api/listings/{id}: # Added endpoint for individual listing
+    get:
+      summary: Получить информацию о конкретной заявке на кредит
+      security:
+        - bearerAuth: [] # Added security
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+          description: ID заявки на кредит
+      responses:
+        "200":
+          description: Информация о заявке
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ListingOutput" # Referencing new schema
+        "401":
+          $ref: "#/components/responses/UnauthorizedError" # Added common error
+        "404":
+          $ref: "#/components/responses/NotFoundError" # Added common error
+        "500":
+          $ref: "#/components/responses/InternalServerError" # Added common error
 
   /api/import/application:
     post:
       summary: Отправка заявки в систему банка
+      security:
+        - bearerAuth: [] # Added security
       responses:
         "200":
           description: Успешная регистрация заявки в системе банка
+        "400":
+          $ref: "#/components/responses/BadRequestError" # Added common error
+        "401":
+          $ref: "#/components/responses/UnauthorizedError" # Added common error
+        "500":
+          $ref: "#/components/responses/InternalServerError" # Added common error
+
+  /api/applications/{id}: # Added endpoint for individual application
+    get:
+      summary: Получить информацию о конкретной заявке в банке
+      security:
+        - bearerAuth: [] # Added security
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+          description: ID заявки в банке
+      responses:
+        "200":
+          description: Информация о заявке в банке
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApplicationOutput" # Referencing new schema
+        "401":
+          $ref: "#/components/responses/UnauthorizedError" # Added common error
+        "404":
+          $ref: "#/components/responses/NotFoundError" # Added common error
+        "500":
+          $ref: "#/components/responses/InternalServerError" # Added common error
 
   /api/profiles/client:
     post:
@@ -57,6 +150,10 @@ paths:
       responses:
         "201":
           description: Профиль клиента создан
+        "400":
+          $ref: "#/components/responses/BadRequestError" # Added common error
+        "500":
+          $ref: "#/components/responses/InternalServerError" # Added common error
 
   /api/profiles/bank:
     post:
@@ -70,6 +167,10 @@ paths:
       responses:
         "201":
           description: Профиль банка создан
+        "400":
+          $ref: "#/components/responses/BadRequestError" # Added common error
+        "500":
+          $ref: "#/components/responses/InternalServerError" # Added common error
 
   /api/login:
     post:
@@ -83,12 +184,22 @@ paths:
       responses:
         "200":
           description: Успешная авторизация
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  token:
+                    type: string
+                    description: JWT token for authentication
         "401":
-          description: Неверные данные
+          $ref: "#/components/responses/UnauthorizedError" # Using common error
 
   /api/profiles/client/{id}:
     get:
       summary: Получить личный кабинет клиента
+      security:
+        - bearerAuth: [] # Added security
       parameters:
         - in: path
           name: id
@@ -103,10 +214,16 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/ClientProfileOutput"
+        "401":
+          $ref: "#/components/responses/UnauthorizedError" # Added common error
         "404":
-          description: Профиль не найден
+          $ref: "#/components/responses/NotFoundError" # Added common error
+        "500":
+          $ref: "#/components/responses/InternalServerError" # Added common error
     delete:
       summary: Удаление профиля клиента
+      security:
+        - bearerAuth: [] # Added security
       parameters:
         - in: path
           name: id
@@ -117,10 +234,20 @@ paths:
       responses:
         "200":
           description: Профиль клиента удалён
+        "401":
+          $ref: "#/components/responses/UnauthorizedError" # Added common error
+        "403":
+          $ref: "#/components/responses/ForbiddenError" # Added common error (if authorization rules apply)
+        "404":
+          $ref: "#/components/responses/NotFoundError" # Added common error
+        "500":
+          $ref: "#/components/responses/InternalServerError" # Added common error
 
   /api/profiles/bank/{id}:
     get:
       summary: Получить личный кабинет банка
+      security:
+        - bearerAuth: [] # Added security
       parameters:
         - in: path
           name: id
@@ -135,10 +262,16 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/BankProfileOutput"
+        "401":
+          $ref: "#/components/responses/UnauthorizedError" # Added common error
         "404":
-          description: Профиль не найден
+          $ref: "#/components/responses/NotFoundError" # Added common error
+        "500":
+          $ref: "#/components/responses/InternalServerError" # Added common error
     delete:
       summary: Удаление профиля банка
+      security:
+        - bearerAuth: [] # Added security
       parameters:
         - in: path
           name: id
@@ -149,8 +282,22 @@ paths:
       responses:
         "200":
           description: Профиль банка удалён
+        "401":
+          $ref: "#/components/responses/UnauthorizedError" # Added common error
+        "403":
+          $ref: "#/components/responses/ForbiddenError" # Added common error (if authorization rules apply)
+        "404":
+          $ref: "#/components/responses/NotFoundError" # Added common error
+        "500":
+          $ref: "#/components/responses/InternalServerError" # Added common error
 
 components:
+  securitySchemes:
+    bearerAuth: # Defined Bearer token security scheme
+      type: http
+      scheme: bearer
+      bearerFormat: JWT # Assuming JWT is used
+
   schemas:
     ListingInput:
       type: object
@@ -161,15 +308,46 @@ components:
           type: string
         financial_info:
           type: string
-        documents:
-          type: array
-          items:
-            type: string
-            format: binary
+        # Documents are handled via multipart/form-data, not in this schema
       required:
         - title
         - description
         - financial_info
+
+    ListingOutput: # New schema for individual listing output
+      type: object
+      properties:
+        id:
+          type: integer
+        title:
+          type: string
+        description:
+          type: string
+        financial_info:
+          type: string
+        status:
+          type: string # Added status
+        documents: # Representing documents in output (e.g., as URLs)
+          type: array
+          items:
+            type: string
+            format: url # Assuming documents are represented as URLs
+
+    ApplicationOutput: # New schema for individual application output
+      type: object
+      properties:
+        id:
+          type: integer
+        status:
+          type: string
+        sent_at:
+          type: string
+          format: date-time
+        listing_id: # Added link to related listing
+          type: integer
+        listing_title: # Added link to related listing
+          type: string
+
 
     ClientProfileInput:
       type: object
@@ -241,7 +419,7 @@ components:
         listings:
           type: array
           items:
-            type: object
+            type: object # This matches the ListingOutput schema properties subset
             properties:
               id:
                 type: integer
@@ -264,7 +442,7 @@ components:
         applications:
           type: array
           items:
-            type: object
+            type: object # This matches the ApplicationOutput schema properties subset
             properties:
               id:
                 type: integer
@@ -273,3 +451,60 @@ components:
               sent_at:
                 type: string
                 format: date-time
+
+    Error: # Generic Error schema
+      type: object
+      properties:
+        code:
+          type: string
+          description: Unique error code
+        message:
+          type: string
+          description: Human-readable error message
+
+  responses: # Reusable error responses
+    UnauthorizedError:
+      description: Authentication information is missing or invalid
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Error"
+            example:
+              code: "auth_001"
+              message: "Invalid or missing token"
+    NotFoundError:
+      description: The specified resource was not found
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Error"
+            example:
+              code: "resource_001"
+              message: "Resource not found"
+    BadRequestError:
+      description: The request was malformed or invalid
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Error"
+            example:
+              code: "request_001"
+              message: "Invalid input data"
+    ForbiddenError:
+      description: The user does not have permission to access this resource
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Error"
+            example:
+              code: "auth_002"
+              message: "Access denied"
+    InternalServerError:
+      description: An unexpected error occurred on the server
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Error"
+            example:
+              code: "server_001"
+              message: "Internal server error"

@@ -19,7 +19,7 @@ const Hero = () => (
   <div className='hero'>
     <h1>Получите предодобренный кредит для бизнеса</h1>
     <p>Платформа, где банки сами находят вас</p>
-    <Link to='/login'>Оставить заявку</Link>
+    <Link to='/login'><Button>Оставить заявку</Button></Link>
   </div>
 );
 

@@ -32,6 +32,23 @@ body {
   margin-bottom: 2rem;
 }
 
+/* Styling for the "Оставить заявку" button in the hero section */
+.hero a {
+  display: inline-block; /* Allows setting padding and margin */
+  background-color: #fff; /* White background */
+  color: #2563eb; /* Blue text color */
+  padding: 0.75rem 2rem; /* Padding around text */
+  border-radius: 0.5rem; /* Rounded corners */
+  text-decoration: none; /* Remove underline */
+  font-weight: 600; /* Semi-bold text */
+  transition: background-color 0.3s ease, color 0.3s ease; /* Smooth transition for hover effects */
+}
+
+.hero a:hover {
+  background-color: #e0e7ff; /* Lighter blue background on hover */
+  color: #1a4ed8; /* Darker blue text on hover */
+}
+
 .section {
   padding: 3rem 1rem;
   text-align: center;

@@ -7,6 +7,8 @@ import About from "./components/pages/About";
 import Partners from "./components/pages/Partners";
 import Services from "./components/pages/Services";
 import Login from "./components/pages/Login";
+import ClientProfile from "./components/pages/ClientProfile";
+import BankProfile from "./components/pages/BankProfile";
 
 function App() {
   return (
@@ -18,6 +20,8 @@ function App() {
         <Route path='/services' element={<Services />} />
         <Route path='/partners' element={<Partners />} />
         <Route path='/login' element={<Login />} />
+        <Route path='/profile/client/:id' element={<ClientProfile />} />
+        <Route path='/profile/bank/:id' element={<BankProfile />} />
         {/* Добавьте другие маршруты по мере необходимости */}
       </Routes>
       <Footer />
