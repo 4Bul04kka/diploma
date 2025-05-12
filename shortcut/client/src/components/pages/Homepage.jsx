@@ -4,6 +4,7 @@ import { Card, CardContent } from "../ui/Card";
 import { FaCheckCircle } from "react-icons/fa";
 
 import "./homepage.css";
+import { Link } from "react-router";
 
 // Переиспользуемый компонент для секции
 const Section = ({ title, children }) => (
@@ -18,7 +19,7 @@ const Hero = () => (
   <div className='hero'>
     <h1>Получите предодобренный кредит для бизнеса</h1>
     <p>Платформа, где банки сами находят вас</p>
-    <Button>Оставить заявку</Button>
+    <Link to='/login'>Оставить заявку</Link>
   </div>
 );
 

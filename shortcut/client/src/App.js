@@ -6,6 +6,7 @@ import Footer from "./components/common/Footer";
 import About from "./components/pages/About";
 import Partners from "./components/pages/Partners";
 import Services from "./components/pages/Services";
+import Login from "./components/pages/Login";
 
 function App() {
   return (
@@ -16,6 +17,7 @@ function App() {
         <Route path='/about' element={<About />} />
         <Route path='/services' element={<Services />} />
         <Route path='/partners' element={<Partners />} />
+        <Route path='/login' element={<Login />} />
         {/* Добавьте другие маршруты по мере необходимости */}
       </Routes>
       <Footer />

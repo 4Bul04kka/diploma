@@ -16,10 +16,11 @@ function Header() {
       {/* Навигация */}
       <nav className='header-nav'>
         <ul className='header-nav-list'>
+          <CustomLink to='/login'>Войти в профиль</CustomLink>
           <CustomLink to='/services'>Услуги</CustomLink>
           <CustomLink to='/partners'>Наши партнёры</CustomLink>
           <CustomLink to='/about'>О платформе</CustomLink>
-          {/* <CustomLink to='/communication'>Контакты</CustomLink> */}
+
           {/* <CustomLink to='/events'>Новости</CustomLink> */}
         </ul>
       </nav>
