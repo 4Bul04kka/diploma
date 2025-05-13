@@ -1,0 +1,41 @@
+version: '3.8'
+
+services:
+  db:
+    image: postgres:13-alpine
+    restart: always
+    environment:
+      POSTGRES_DB: postgres
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: your_password # **CHANGE THIS IN PRODUCTION**
+    ports:
+      - "5432:5432"
+    volumes:
+      - db_data:/var/lib/postgresql/data
+      - ./shortcut/server/init.sql:/docker-entrypoint-initdb.d/init.sql # Initialize database with your schema
+
+  server:
+    build:
+      context: ./shortcut/server
+      dockerfile: Dockerfile
+    restart: always
+    ports:
+      - "3001:3001"
+    environment:
+      DATABASE_URL: postgres://postgres:your_password@db:5432/postgres # **CHANGE THIS IN PRODUCTION**
+      JWT_SECRET: your_jwt_secret # **CHANGE THIS IN PRODUCTION**
+    depends_on:
+      - db
+
+  client:
+    build:
+      context: ./shortcut/client
+      dockerfile: Dockerfile
+    restart: always
+    ports:
+      - "80:80"
+    depends_on:
+      - server
+
+volumes:
+  db_data:

@@ -11,7 +11,6 @@ import { fileURLToPath } from "url";
 // Import new routers and middleware
 import authRouter from "./authRouter.js";
 import profileRouter from "./profileRouter.js";
-import listingRouter from "./listingRouter.js";
 import applicationRouter from "./applicationRouter.js";
 import dataRouter from "./dataRouter.js";
 import authMiddleware from "./authMiddleware.js"; // Import the auth middleware
@@ -39,7 +38,6 @@ app.use("/api", authMiddleware);
 
 // Use other routers (protected routes)
 app.use("/api/profiles", profileRouter);
-app.use("/api/listings", listingRouter);
 app.use("/api", applicationRouter); // applicationRouter includes /import/application
 app.use("/api", dataRouter); // dataRouter includes /financial-data
 
