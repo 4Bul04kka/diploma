@@ -1,5 +1,5 @@
 import jwt from 'jsonwebtoken';
-import pool from './db.js'; // Import the database connection pool
+import pool from '../db.js'; // Import the database connection pool from the new location
 
 const JWT_SECRET = process.env.JWT_SECRET || 'your_jwt_secret'; // Use environment variable in production
 

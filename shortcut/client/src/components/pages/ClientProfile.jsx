@@ -1,9 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom'; // Assuming react-router-dom v6+
+import { fetchClientProfile } from '../api/profile'; // Import the API function
 import './clientprofile.css';
-
-// Removed Mock Client Profile Data
-// const mockClientProfile = { ... };
 
 const ClientProfile = () => {
   const { id } = useParams();
@@ -12,7 +10,7 @@ const ClientProfile = () => {
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    const fetchClientProfile = async () => {
+    const getClientProfile = async () => {
       try {
         // TODO: Replace with actual token retrieval logic (e.g., from localStorage or context)
         const token = localStorage.getItem('token'); // Assuming token is stored in localStorage
@@ -23,25 +21,11 @@ const ClientProfile = () => {
           return;
         }
 
-        const response = await fetch(`/api/profiles/client/${id}`, {
-          headers: {
-            'Authorization': `Bearer ${token}`,
-            'Content-Type': 'application/json'
-          }
-        });
-
-        if (!response.ok) {
-          if (response.status === 404) {
-            throw new Error("Client profile not found.");
-          } else if (response.status === 401) {
-            throw new Error("Unauthorized: Please log in.");
-          } else {
-            throw new Error(`Error fetching client profile: ${response.statusText}`);
-          }
-        }
-
-        const data = await response.json();
-        setProfile(data.data); // Assuming the profile data is in a 'data' field
+        // Use the imported API function
+        const data = await fetchClientProfile(id, token);
+        
+        // Assuming the API function returns the profile data directly now
+        setProfile(data);
         setLoading(false);
 
       } catch (err) {
@@ -50,7 +34,7 @@ const ClientProfile = () => {
       }
     };
 
-    fetchClientProfile();
+    getClientProfile();
   }, [id]); // Re-run effect if id changes
 
   if (loading) {

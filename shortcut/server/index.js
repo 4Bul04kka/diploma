@@ -9,11 +9,11 @@ import path from "path";
 import { fileURLToPath } from "url";
 
 // Import new routers and middleware
-import authRouter from "./authRouter.js";
-import profileRouter from "./profileRouter.js";
-import applicationRouter from "./applicationRouter.js";
-import dataRouter from "./dataRouter.js";
-import authMiddleware from "./authMiddleware.js"; // Import the auth middleware
+import authRouter from "./routes/authRouter.js";
+import profileRouter from "./routes/profileRouter.js";
+import applicationRouter from "./routes/applicationRouter.js";
+import dataRouter from "./routes/dataRouter.js";
+import authMiddleware from "./middleware/authMiddleware.js"; // Import the auth middleware
 
 const PORT = 3001;
 const app = express();

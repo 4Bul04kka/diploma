@@ -1,4 +1,4 @@
-import pool from './db.js'; // Import the database connection pool
+import pool from '../db.js'; // Import the database connection pool from the new location
 
 class ProfileController {
     async createClientProfile(req, res) {
