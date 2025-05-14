@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom'; // Assuming react-router-dom v6+
-import { fetchBankProfile } from '../api/profile'; // Import the API function
+import { fetchBankProfile } from '../../api/profile'; // Import the API function
 import './bankprofile.css';
 
 const BankProfile = () => {

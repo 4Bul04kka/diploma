@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom'; // Assuming react-router-dom v6+
-import { fetchClientProfile } from '../api/profile'; // Import the API function
+import { fetchClientProfile } from '../../api/profile'; // Import the API function
 import './clientprofile.css';
 
 const ClientProfile = () => {
