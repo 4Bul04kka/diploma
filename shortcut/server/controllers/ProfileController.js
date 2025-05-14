@@ -17,6 +17,7 @@ class ProfileController {
             // Hash the password
             const hashedPassword = await bcrypt.hash(password, SALT_ROUNDS);
 
+            // Removed user_id as it's not in the clients table based on init.sql
             const result = await pool.query(
                 'INSERT INTO clients (email, full_name, company_name, inn, kpp, address, financial_info, password) VALUES ($1, $2, $3, $4, $5, $6, $7, $8) RETURNING id',
                 [email, full_name, company_name, inn, kpp, address, financial_info, hashedPassword]
@@ -48,6 +49,7 @@ class ProfileController {
              // Hash the password
             const hashedPassword = await bcrypt.hash(password, SALT_ROUNDS);
 
+            // Removed user_id as it's not in the banks table based on init.sql
             const result = await pool.query(
                 'INSERT INTO banks (email, full_name, bank_branch, password) VALUES ($1, $2, $3, $4) RETURNING id',
                 [email, full_name, bank_branch, hashedPassword]
