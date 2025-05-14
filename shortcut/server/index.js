@@ -32,14 +32,14 @@ app.use(fileUpload({}));
 // Use auth router (login endpoint - no auth required)
 app.use("/api", authRouter);
 
-// Apply authentication middleware to all subsequent /api routes
-// This protects routes in profileRouter, listingRouter, applicationRouter, dataRouter
-app.use("/api", authMiddleware);
+// REMOVED: Global application of authMiddleware
+// app.use("/api", authMiddleware);
 
-// Use other routers (protected routes)
-app.use("/api/profiles", profileRouter);
-app.use("/api", applicationRouter); // applicationRouter includes /import/application
-app.use("/api", dataRouter); // dataRouter includes /financial-data
+// Use other routers. Apply authMiddleware to specific routes/routers as needed.
+// Profile creation routes are public.
+app.use("/api/profiles", profileRouter); // authMiddleware will be applied within profileRouter for protected routes
+app.use("/api", applicationRouter); // authMiddleware will need to be applied within applicationRouter for protected routes
+app.use("/api", dataRouter); // authMiddleware will need to be applied within dataRouter for protected routes
 
 // Swagger
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
