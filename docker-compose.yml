@@ -22,7 +22,7 @@ services:
     ports:
       - "3001:3001"
     environment:
-      DATABASE_URL: postgres://postgres:your_password@db:5432/postgres # **CHANGE THIS IN PRODUCTION**
+      DATABASE_URL: postgres://postgres:your_password@db:5432/postgres # Corrected hostname
       JWT_SECRET: your_jwt_secret # **CHANGE THIS IN PRODUCTION**
     depends_on:
       - db
