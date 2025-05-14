@@ -12,7 +12,11 @@ const CreateClientProfile = () => {
     kpp: '',
     address: '',
     financial_info: '',
+    password: '',
+    confirmPassword: '',
   });
+
+  const [error, setError] = useState('');
 
   const navigate = useNavigate();
 
@@ -23,23 +27,38 @@ const CreateClientProfile = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    // TODO: Add client-side validation
+    setError(''); // Clear previous errors
+
+    if (profileData.password !== profileData.confirmPassword) {
+      setError('Passwords do not match');
+      return;
+    }
 
     try {
-      // Assuming your backend is running on http://localhost:3001
-      const response = await axios.post('http://localhost:3001/api/profile/client', profileData);
+      // Use the backend service name 'server' and port 3001 within the Docker network
+      const response = await axios.post('http://server:3001/api/profile/client', {
+        email: profileData.email,
+        full_name: profileData.full_name,
+        company_name: profileData.company_name,
+        inn: profileData.inn,
+        kpp: profileData.kpp,
+        address: profileData.address,
+        financial_info: profileData.financial_info,
+        password: profileData.password, // Include password in the request
+      });
       console.log('Profile created successfully:', response.data);
       // Redirect to the newly created client profile page
       navigate(`/profile/client/${response.data.profileId}`);
-    } catch (error) {
-      console.error('Error creating profile:', error);
-      // TODO: Display error message to the user
+    } catch (err) {
+      console.error('Error creating profile:', err);
+      setError(err.response?.data?.message || 'Error creating profile'); // Display backend error message
     }
   };
 
   return (
     <div className="create-client-profile-page"> {/* Apply class name */}
       <h2>Create Client Profile</h2>
+      {error && <p className="error-message">{error}</p>}
       <form onSubmit={handleSubmit}>
         <div>
           <label htmlFor="email">Email:</label>
@@ -68,6 +87,15 @@ const CreateClientProfile = () => {
         <div>
           <label htmlFor="financial_info">Financial Info:</label>
           <textarea id="financial_info" name="financial_info" value={profileData.financial_info} onChange={handleInputChange} required ></textarea>
+        </div>
+        {/* New password fields */}
+        <div>
+          <label htmlFor="password">Password:</label>
+          <input type="password" id="password" name="password" value={profileData.password} onChange={handleInputChange} required />
+        </div>
+        <div>
+          <label htmlFor="confirmPassword">Confirm Password:</label>
+          <input type="password" id="confirmPassword" name="confirmPassword" value={profileData.confirmPassword} onChange={handleInputChange} required />
         </div>
         <button type="submit">Create Profile</button>
       </form>

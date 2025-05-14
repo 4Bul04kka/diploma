@@ -8,7 +8,11 @@ const CreateBankProfile = () => {
     email: '',
     full_name: '',
     bank_branch: '',
+    password: '',
+    confirmPassword: '',
   });
+
+  const [error, setError] = useState('');
 
   const navigate = useNavigate();
 
@@ -19,23 +23,34 @@ const CreateBankProfile = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    // TODO: Add client-side validation
+    setError(''); // Clear previous errors
+
+    if (profileData.password !== profileData.confirmPassword) {
+      setError('Passwords do not match');
+      return;
+    }
 
     try {
-      // Assuming your backend is running on http://localhost:3001
-      const response = await axios.post('http://localhost:3001/api/profile/bank', profileData);
+      // Assuming your backend is running on http://server:3001 (Docker service name)
+      const response = await axios.post('http://server:3001/api/profile/bank', {
+        email: profileData.email,
+        full_name: profileData.full_name,
+        bank_branch: profileData.bank_branch,
+        password: profileData.password, // Include password in the request
+      });
       console.log('Bank profile created successfully:', response.data);
       // Redirect to the newly created bank profile page
       navigate(`/profile/bank/${response.data.profileId}`);
-    } catch (error) {
-      console.error('Error creating bank profile:', error);
-      // TODO: Display error message to the user
+    } catch (err) {
+      console.error('Error creating bank profile:', err);
+      setError(err.response?.data?.message || 'Error creating bank profile'); // Display backend error message
     }
   };
 
   return (
     <div className="create-bank-profile-page"> {/* Apply class name */}
       <h2>Create Bank Profile</h2>
+      {error && <p className="error-message">{error}</p>}
       <form onSubmit={handleSubmit}>
         <div>
           <label htmlFor="email">Email:</label>
@@ -48,6 +63,15 @@ const CreateBankProfile = () => {
         <div>
           <label htmlFor="bank_branch">Bank Branch:</label>
           <input type="text" id="bank_branch" name="bank_branch" value={profileData.bank_branch} onChange={handleInputChange} required />
+        </div>
+        {/* New password fields */}
+        <div>
+          <label htmlFor="password">Password:</label>
+          <input type="password" id="password" name="password" value={profileData.password} onChange={handleInputChange} required />
+        </div>
+        <div>
+          <label htmlFor="confirmPassword">Confirm Password:</label>
+          <input type="password" id="confirmPassword" name="confirmPassword" value={profileData.confirmPassword} onChange={handleInputChange} required />
         </div>
         <button type="submit">Create Profile</button>
       </form>

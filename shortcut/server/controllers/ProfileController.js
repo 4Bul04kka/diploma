@@ -1,20 +1,25 @@
 import pool from '../db.js'; // Import the database connection pool from the new location
+import bcrypt from 'bcrypt'; // Import bcrypt
+
+const SALT_ROUNDS = 10; // Define the number of salt rounds for bcrypt
 
 class ProfileController {
     async createClientProfile(req, res) {
         try {
-            const { email, full_name, company_name, inn, kpp, address, financial_info } = req.body;
-            // Assuming user_id is available in req.user after authentication middleware
-            const userId = req.user.id; // Placeholder: replace with actual way to get user ID
+            const { email, full_name, company_name, inn, kpp, address, financial_info, password } = req.body;
 
             // Basic validation
-            if (!userId || !email || !full_name || !company_name || !inn || !kpp || !address || !financial_info) {
-                return res.status(400).json({ message: "All fields are required" });
+            if (!email || !full_name || !company_name || !inn || !address || !financial_info || !password) {
+                // KPP is optional based on init.sql
+                return res.status(400).json({ message: "Email, full name, company name, inn, address, financial info, and password are required." });
             }
 
+            // Hash the password
+            const hashedPassword = await bcrypt.hash(password, SALT_ROUNDS);
+
             const result = await pool.query(
-                'INSERT INTO clients (user_id, email, full_name, company_name, inn, kpp, address, financial_info) VALUES ($1, $2, $3, $4, $5, $6, $7, $8) RETURNING id',
-                [userId, email, full_name, company_name, inn, kpp, address, financial_info]
+                'INSERT INTO clients (email, full_name, company_name, inn, kpp, address, financial_info, password) VALUES ($1, $2, $3, $4, $5, $6, $7, $8) RETURNING id',
+                [email, full_name, company_name, inn, kpp, address, financial_info, hashedPassword]
             );
 
             const newProfileId = result.rows[0].id;
@@ -23,24 +28,29 @@ class ProfileController {
 
         } catch (error) {
             console.error("Error creating client profile:", error);
+            // Check for duplicate email error (PostgreSQL error code 23505 for unique violation)
+            if (error.code === '23505') {
+                 return res.status(409).json({ message: "Email already exists." });
+            }
             res.status(500).json({ message: "Internal server error" });
         }
     }
 
     async createBankProfile(req, res) {
         try {
-            const { email, full_name, bank_branch } = req.body;
-            // Assuming user_id is available in req.user after authentication middleware
-            const userId = req.user.id; // Placeholder: replace with actual way to get user ID
+            const { email, full_name, bank_branch, password } = req.body;
 
             // Basic validation
-            if (!userId || !email || !full_name || !bank_branch) {
-                return res.status(400).json({ message: "All fields are required" });
+            if (!email || !full_name || !bank_branch || !password) {
+                return res.status(400).json({ message: "Email, full name, bank branch, and password are required." });
             }
 
+             // Hash the password
+            const hashedPassword = await bcrypt.hash(password, SALT_ROUNDS);
+
             const result = await pool.query(
-                'INSERT INTO banks (user_id, email, full_name, bank_branch) VALUES ($1, $2, $3, $4) RETURNING id',
-                [userId, email, full_name, bank_branch]
+                'INSERT INTO banks (email, full_name, bank_branch, password) VALUES ($1, $2, $3, $4) RETURNING id',
+                [email, full_name, bank_branch, hashedPassword]
             );
 
             const newProfileId = result.rows[0].id;
@@ -49,6 +59,10 @@ class ProfileController {
 
         } catch (error) {
             console.error("Error creating bank profile:", error);
+             // Check for duplicate email error (PostgreSQL error code 23505 for unique violation)
+            if (error.code === '23505') {
+                 return res.status(409).json({ message: "Email already exists." });
+            }
             res.status(500).json({ message: "Internal server error" });
         }
     }
@@ -59,6 +73,7 @@ class ProfileController {
 
             // Fetch the client and their listings concurrently
             const [clientResult, listingsResult] = await Promise.all([
+                // Do not select the password field here for security
                 pool.query(
                     'SELECT id, email, full_name, company_name, inn, kpp, address, financial_info FROM clients WHERE id = $1',
                     [id]
@@ -98,6 +113,7 @@ class ProfileController {
 
             // Fetch the bank and their applications concurrently
             const [bankResult, applicationsResult] = await Promise.all([
+                 // Do not select the password field here for security
                 pool.query(
                     'SELECT id, email, full_name, bank_branch FROM banks WHERE id = $1',
                     [id]
