@@ -2,13 +2,55 @@ import pool from '../db.js'; // Import the database connection pool from the new
 
 class ProfileController {
     async createClientProfile(req, res) {
-        // TODO: Implement client profile creation
-        res.status(501).json({ message: "Not Implemented" });
+        try {
+            const { email, full_name, company_name, inn, kpp, address, financial_info } = req.body;
+            // Assuming user_id is available in req.user after authentication middleware
+            const userId = req.user.id; // Placeholder: replace with actual way to get user ID
+
+            // Basic validation
+            if (!userId || !email || !full_name || !company_name || !inn || !kpp || !address || !financial_info) {
+                return res.status(400).json({ message: "All fields are required" });
+            }
+
+            const result = await pool.query(
+                'INSERT INTO clients (user_id, email, full_name, company_name, inn, kpp, address, financial_info) VALUES ($1, $2, $3, $4, $5, $6, $7, $8) RETURNING id',
+                [userId, email, full_name, company_name, inn, kpp, address, financial_info]
+            );
+
+            const newProfileId = result.rows[0].id;
+
+            res.status(201).json({ message: "Client profile created successfully", profileId: newProfileId });
+
+        } catch (error) {
+            console.error("Error creating client profile:", error);
+            res.status(500).json({ message: "Internal server error" });
+        }
     }
 
     async createBankProfile(req, res) {
-        // TODO: Implement bank profile creation
-        res.status(501).json({ message: "Not Implemented" });
+        try {
+            const { email, full_name, bank_branch } = req.body;
+            // Assuming user_id is available in req.user after authentication middleware
+            const userId = req.user.id; // Placeholder: replace with actual way to get user ID
+
+            // Basic validation
+            if (!userId || !email || !full_name || !bank_branch) {
+                return res.status(400).json({ message: "All fields are required" });
+            }
+
+            const result = await pool.query(
+                'INSERT INTO banks (user_id, email, full_name, bank_branch) VALUES ($1, $2, $3, $4) RETURNING id',
+                [userId, email, full_name, bank_branch]
+            );
+
+            const newProfileId = result.rows[0].id;
+
+            res.status(201).json({ message: "Bank profile created successfully", profileId: newProfileId });
+
+        } catch (error) {
+            console.error("Error creating bank profile:", error);
+            res.status(500).json({ message: "Internal server error" });
+        }
     }
 
     async getClientProfile(req, res) {

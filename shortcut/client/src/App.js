@@ -9,6 +9,8 @@ import Services from "./components/pages/Services";
 import Login from "./components/pages/Login";
 import ClientProfile from "./components/pages/ClientProfile";
 import BankProfile from "./components/pages/BankProfile";
+import CreateClientProfile from "./components/pages/CreateClientProfile";
+import CreateBankProfile from "./components/pages/CreateBankProfile";
 
 function App() {
   return (
@@ -22,6 +24,8 @@ function App() {
         <Route path='/login' element={<Login />} />
         <Route path='/profile/client/:id' element={<ClientProfile />} />
         <Route path='/profile/bank/:id' element={<BankProfile />} />
+        <Route path='/create-client-profile' element={<CreateClientProfile />} />
+        <Route path='/create-bank-profile' element={<CreateBankProfile />} />
         {/* Добавьте другие маршруты по мере необходимости */}
       </Routes>
       <Footer />
