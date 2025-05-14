@@ -12,7 +12,8 @@ const Login = () => {
     e.preventDefault();
     try {
       // Use relative path, Nginx will proxy this to the backend
-      const response = await axios.post("/api/login", { email, password });
+      // Include the 'role' field in the login request
+      const response = await axios.post("/api/login", { email, password, role: 'client' }); // Added role
       localStorage.setItem("token", response.data.token);
       window.location.href = "/"; // перенаправление после входа
     } catch (err) {
