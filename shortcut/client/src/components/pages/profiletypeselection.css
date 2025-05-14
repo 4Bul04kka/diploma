@@ -1,0 +1,48 @@
+/* profiletypeselection.css */
+.profile-type-selection-page {
+  padding: 40px 20px;
+  max-width: 400px; /* Keep it relatively narrow as it's a simple choice */
+  margin: 40px auto; /* Add some top/bottom margin */
+  text-align: center; /* Center align content */
+  border: 1px solid #ccc; /* Add a subtle border */
+  border-radius: 8px; /* Rounded corners */
+  background-color: #f9f9f9; /* Light background */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Add a subtle shadow */
+}
+
+.profile-type-selection-page h2 {
+  color: #2563eb;
+  margin-bottom: 20px;
+  font-size: 2rem;
+}
+
+.profile-type-selection-page p {
+  margin-bottom: 25px;
+  color: #555;
+}
+
+.profile-type-selection-page div {
+  margin-bottom: 15px; /* Space between buttons */
+}
+
+.profile-type-selection-page button {
+  display: block; /* Make buttons take full width of their container */
+  width: 100%;
+  padding: 12px 20px;
+  background-color: #2563eb;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 1.1rem;
+  transition: background-color 0.3s ease;
+}
+
+.profile-type-selection-page button:hover {
+  background-color: #1e40af;
+}
+
+/* Style for the Link component to ensure button styles are applied */
+.profile-type-selection-page div a {
+    text-decoration: none; /* Remove underline from links */
+}

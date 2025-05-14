@@ -141,6 +141,8 @@ paths:
   /api/profiles/client:
     post:
       summary: Создание профиля клиента
+      security:
+        - bearerAuth: [] # Added security
       requestBody:
         required: true
         content:
@@ -158,6 +160,8 @@ paths:
   /api/profiles/bank:
     post:
       summary: Создание профиля банка
+      security:
+        - bearerAuth: [] # Added security
       requestBody:
         required: true
         content:
@@ -355,8 +359,6 @@ components:
         email:
           type: string
           format: email
-        password:
-          type: string
         full_name:
           type: string
         company_name:
@@ -369,7 +371,7 @@ components:
           type: string
         financial_info:
           type: string
-      required: [email, password, full_name, company_name, inn]
+      required: [email, full_name, company_name, inn]
 
     BankProfileInput:
       type: object
@@ -377,13 +379,11 @@ components:
         email:
           type: string
           format: email
-        password:
-          type: string
         full_name:
           type: string
         bank_branch:
           type: string
-      required: [email, password, full_name, bank_branch]
+      required: [email, full_name, bank_branch]
 
     LoginInput:
       type: object

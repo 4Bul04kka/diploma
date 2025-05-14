@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import axios from "axios";
+import { Link } from "react-router-dom"; // Import Link
 import "./login.css";
 
 const Login = () => {
@@ -39,6 +40,10 @@ const Login = () => {
         />
         <button type='submit'>Войти</button>
       </form>
+      {/* Link to profile creation */} {/* Added link here */}
+      <div className="create-profile-link">
+        <p>Нет профиля? <Link to="/select-profile-type">Создать профиль</Link></p>
+      </div>
     </div>
   );
 };
