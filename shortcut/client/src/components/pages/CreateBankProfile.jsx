@@ -31,8 +31,8 @@ const CreateBankProfile = () => {
     }
 
     try {
-      // Assuming your backend is running on http://server:3001 (Docker service name)
-      const response = await axios.post('http://server:3001/api/profile/bank', {
+      // Use relative path, Nginx will proxy this to the backend
+      const response = await axios.post('/api/profile/bank', {
         email: profileData.email,
         full_name: profileData.full_name,
         bank_branch: profileData.bank_branch,

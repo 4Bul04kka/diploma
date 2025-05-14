@@ -11,8 +11,8 @@ const Login = () => {
   const handleLogin = async (e) => {
     e.preventDefault();
     try {
-      // Use the backend service name 'server' and port 3001 within the Docker network
-      const response = await axios.post("http://server:3001/api/login", { email, password });
+      // Use relative path, Nginx will proxy this to the backend
+      const response = await axios.post("/api/login", { email, password });
       localStorage.setItem("token", response.data.token);
       window.location.href = "/"; // перенаправление после входа
     } catch (err) {
