@@ -31,8 +31,8 @@ const CreateBankProfile = () => {
     }
 
     try {
-      // Use relative path, Nginx will proxy this to the backend
-      const response = await axios.post('/api/profile/bank', {
+      // Use the correct relative path: /api/profiles/bank
+      const response = await axios.post('/api/profiles/bank', {
         email: profileData.email,
         full_name: profileData.full_name,
         bank_branch: profileData.bank_branch,

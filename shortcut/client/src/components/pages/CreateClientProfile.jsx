@@ -35,8 +35,8 @@ const CreateClientProfile = () => {
     }
 
     try {
-      // Use the backend service name 'server' and port 3001 within the Docker network
-      const response = await axios.post('http://server:3001/api/profile/client', {
+      // Use the correct relative path: /api/profiles/client
+      const response = await axios.post('/api/profiles/client', {
         email: profileData.email,
         full_name: profileData.full_name,
         company_name: profileData.company_name,
