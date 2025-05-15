@@ -1,6 +1,6 @@
 // src/api/profile.js
 
-const API_BASE_URL = "http://server:3001/api"; // Replace with your actual API base URL
+const API_BASE_URL = "http://server:3001"; // Replace with your actual API base URL
 
 // Function to fetch client profile by ID
 export const fetchClientProfile = async (clientId, token) => {
