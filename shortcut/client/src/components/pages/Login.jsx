@@ -1,26 +1,44 @@
 import React, { useState } from "react";
 import axios from "axios";
-import { Link } from "react-router-dom"; // Import Link
+import { Link, useNavigate } from "react-router-dom"; // Добавлен useNavigate
 import "./login.css";
 
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
+  const navigate = useNavigate(); // Навигация для переадресации
 
   const handleLogin = async (e) => {
     e.preventDefault();
     try {
-      // Use relative path, Nginx will proxy this to the backend
-      // Include the 'role' field in the login request
+      // 1. Вход с указанием роли
       const response = await axios.post("/api/login", {
         email,
         password,
         role: "bank",
-      }); // Added role
-      localStorage.setItem("token", response.data.token);
-      window.location.href = "/"; // перенаправление после входа
+      });
+
+      // 2. Сохранение токена
+      const token = response.data.token;
+      localStorage.setItem("token", token);
+
+      // 3. Получение профиля пользователя по email
+      const profileResponse = await axios.get("/api/profiles/bank", {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      const bankProfile = profileResponse.data;
+      const userId = bankProfile.id;
+
+      console.log(`Успешный вход в профиль банка. ID пользователя: ${userId}`);
+
+      // 4. Переход к профилю банка
+      navigate(`/profile/bank/${userId}`);
     } catch (err) {
+      console.error("Ошибка входа:", err);
       setError("Неверный логин или пароль");
     }
   };

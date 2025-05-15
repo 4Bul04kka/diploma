@@ -1,6 +1,6 @@
 import express from "express";
 import ProfileController from "../controllers/ProfileController.js";
-import authMiddleware from '../middleware/authMiddleware.js'; // Import authMiddleware
+import authMiddleware from "../middleware/authMiddleware.js"; // Import authMiddleware
 
 const router = express.Router();
 
@@ -8,10 +8,16 @@ const router = express.Router();
 // Profile creation routes do not require authentication (for registration)
 router.post("/client", ProfileController.createClientProfile);
 router.post("/bank", ProfileController.createBankProfile);
+// Новый маршрут — получить профиль банка по токену (для входа)
+router.get("/bank", authMiddleware, ProfileController.getBankProfileByToken);
 
 // Apply authMiddleware to routes that require authentication (getting and deleting profiles)
 router.get("/client/:id", authMiddleware, ProfileController.getClientProfile);
-router.delete("/client/:id", authMiddleware, ProfileController.deleteClientProfile);
+router.delete(
+  "/client/:id",
+  authMiddleware,
+  ProfileController.deleteClientProfile
+);
 router.get("/bank/:id", authMiddleware, ProfileController.getBankProfile);
 router.delete("/bank/:id", authMiddleware, ProfileController.deleteBankProfile);
 
