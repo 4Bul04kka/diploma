@@ -34,8 +34,8 @@
 }
 
 .create-client-profile-page textarea {
-    min-height: 100px; /* Give textarea some default height */
-    resize: vertical; /* Allow vertical resizing */
+  min-height: 100px; /* Give textarea some default height */
+  resize: vertical; /* Allow vertical resizing */
 }
 
 .create-client-profile-page button[type="submit"] {

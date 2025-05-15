@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom'; // Assuming react-router-dom v6+
-import { fetchBankProfile } from '../../api/profile'; // Import the API function
-import './bankprofile.css';
+import React, { useState, useEffect } from "react";
+import { useParams } from "react-router-dom"; // Assuming react-router-dom v6+
+import { fetchBankProfile } from "../../api/profile"; // Import the API function
+import "./bankprofile.css";
 
 const BankProfile = () => {
   const { id } = useParams();
@@ -13,7 +13,7 @@ const BankProfile = () => {
     const getBankProfile = async () => {
       try {
         // TODO: Replace with actual token retrieval logic (e.g., from localStorage or context)
-        const token = localStorage.getItem('token'); // Assuming token is stored in localStorage
+        const token = localStorage.getItem("token"); // Assuming token is stored in localStorage
 
         if (!token) {
           setError("Authentication token not found.");
@@ -27,7 +27,6 @@ const BankProfile = () => {
         // Assuming the API function returns the profile data directly now
         setProfile(data);
         setLoading(false);
-
       } catch (err) {
         setError(err.message);
         setLoading(false);
@@ -38,29 +37,38 @@ const BankProfile = () => {
   }, [id]); // Re-run effect if id changes
 
   if (loading) {
-    return <div className="bank-profile-page">Loading bank profile...</div>;
+    return <div className='bank-profile-page'>Loading bank profile...</div>;
   }
 
   if (error) {
-    return <div className="bank-profile-page">Error: {error}</div>;
+    return <div className='bank-profile-page'>Error: {error}</div>;
   }
 
   // Display the profile data
   return (
-    <div className="bank-profile-page">
+    <div className='bank-profile-page'>
       <h2>Bank Profile</h2>
       {profile ? (
         <div>
-          <p><strong>ID:</strong> {profile.id}</p>
-          <p><strong>Full Name:</strong> {profile.full_name}</p>
-          <p><strong>Email:</strong> {profile.email}</p>
-          <p><strong>Bank Branch:</strong> {profile.bank_branch}</p>
+          <p>
+            <strong>ID:</strong> {profile.id}
+          </p>
+          <p>
+            <strong>ФИО:</strong> {profile.full_name}
+          </p>
+          <p>
+            <strong>Email:</strong> {profile.email}
+          </p>
+          <p>
+            <strong>Банк:</strong> {profile.bank_branch}
+          </p>
           <h3>Applications</h3>
-           {profile.applications && profile.applications.length > 0 ? (
+          {profile.applications && profile.applications.length > 0 ? (
             <ul>
-              {profile.applications.map(application => (
+              {profile.applications.map((application) => (
                 <li key={application.id}>
-                  Application ID: {application.id}, Status: {application.status}, Sent At: {application.sent_at}
+                  Application ID: {application.id}, Status: {application.status}
+                  , Sent At: {application.sent_at}
                 </li>
               ))}
             </ul>

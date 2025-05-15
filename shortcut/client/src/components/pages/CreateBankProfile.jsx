@@ -49,7 +49,7 @@ const CreateBankProfile = () => {
 
   return (
     <div className='create-bank-profile-page'>
-      <h2>Create Bank Profile</h2>
+      <h2>Создать профиль представителя банка</h2>
       {error && <p className='error-message'>{error}</p>}
       <form onSubmit={handleSubmit}>
         <div>
@@ -64,7 +64,7 @@ const CreateBankProfile = () => {
           />
         </div>
         <div>
-          <label htmlFor='full_name'>Full Name:</label>
+          <label htmlFor='full_name'>ФИО:</label>
           <input
             type='text'
             id='full_name'
@@ -75,7 +75,7 @@ const CreateBankProfile = () => {
           />
         </div>
         <div>
-          <label htmlFor='bank_branch'>Bank Branch:</label>
+          <label htmlFor='bank_branch'>Представляемый банк:</label>
           <input
             type='text'
             id='bank_branch'
@@ -86,7 +86,7 @@ const CreateBankProfile = () => {
           />
         </div>
         <div>
-          <label htmlFor='password'>Password:</label>
+          <label htmlFor='password'>Пароль:</label>
           <input
             type='password'
             id='password'
@@ -97,7 +97,7 @@ const CreateBankProfile = () => {
           />
         </div>
         <div>
-          <label htmlFor='confirmPassword'>Confirm Password:</label>
+          <label htmlFor='confirmPassword'>Подтвердите пароль:</label>
           <input
             type='password'
             id='confirmPassword'
@@ -107,7 +107,7 @@ const CreateBankProfile = () => {
             required
           />
         </div>
-        <button type='submit'>Create Profile</button>
+        <button type='submit'>Создать профиль</button>
       </form>
     </div>
   );

@@ -13,7 +13,11 @@ const Login = () => {
     try {
       // Use relative path, Nginx will proxy this to the backend
       // Include the 'role' field in the login request
-      const response = await axios.post("/api/login", { email, password, role: 'client' }); // Added role
+      const response = await axios.post("/api/login", {
+        email,
+        password,
+        role: "client",
+      }); // Added role
       localStorage.setItem("token", response.data.token);
       window.location.href = "/"; // перенаправление после входа
     } catch (err) {
@@ -40,12 +44,11 @@ const Login = () => {
           onChange={(e) => setPassword(e.target.value)}
           required
         />
+        <p className='create-profile-link'>
+          Нет профиля? <Link to='/select-profile-type'>Создать профиль</Link>
+        </p>
         <button type='submit'>Войти</button>
       </form>
-      {/* Link to profile creation */} {/* Added link here */}
-      <div className="create-profile-link">
-        <p>Нет профиля? <Link to="/select-profile-type">Создать профиль</Link></p>
-      </div>
     </div>
   );
 };
