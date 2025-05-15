@@ -5,15 +5,12 @@ const API_BASE_URL = "http://server:3001/api"; // Replace with your actual API b
 // Function to fetch client profile by ID
 export const fetchClientProfile = async (clientId, token) => {
   try {
-    const response = await fetch(
-      `${API_BASE_URL}/profiles/client/${clientId}`,
-      {
-        headers: {
-          Authorization: `Bearer ${token}`,
-          "Content-Type": "application/json",
-        },
-      }
-    );
+    const response = await fetch(`${API_BASE_URL}/profile/client/${clientId}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
+      },
+    });
 
     if (!response.ok) {
       // Handle non-2xx responses
@@ -32,7 +29,7 @@ export const fetchClientProfile = async (clientId, token) => {
 // Function to fetch bank profile by ID
 export const fetchBankProfile = async (bankId, token) => {
   try {
-    const response = await fetch(`${API_BASE_URL}/profiles/bank/${bankId}`, {
+    const response = await fetch(`${API_BASE_URL}/profile/bank/${bankId}`, {
       headers: {
         Authorization: `Bearer ${token}`,
         "Content-Type": "application/json",
