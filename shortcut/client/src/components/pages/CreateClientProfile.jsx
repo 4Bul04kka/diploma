@@ -57,7 +57,7 @@ const CreateClientProfile = () => {
 
   return (
     <div className='create-client-profile-page'>
-      <h2>Create Client Profile</h2>
+      <h2>Создать профиль представителя компании</h2>
       {error && <p className='error-message'>{error}</p>}
       <form onSubmit={handleSubmit}>
         <div>

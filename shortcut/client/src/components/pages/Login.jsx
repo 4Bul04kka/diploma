@@ -16,7 +16,7 @@ const Login = () => {
       const response = await axios.post("/api/login", {
         email,
         password,
-        role: "client",
+        role: "bank",
       }); // Added role
       localStorage.setItem("token", response.data.token);
       window.location.href = "/"; // перенаправление после входа
